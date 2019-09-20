@@ -1,0 +1,54 @@
+syntax="proto3";
+
+package proto;
+
+message Item {
+    int32 ID = 1;
+    string Title = 2;
+    string Description = 3;
+    int32 UserID = 4;
+}
+
+service ItemService {
+    rpc CreateItem (CreateItemReq) returns (CreateItemRes);
+    rpc GetItem (GetItemReq) returns (GetItemRes);
+    rpc UpdateItem (UpdateItemReq) returns (UpdateItemRes);
+    rpc DeleteItem (DeleteItemReq) returns (DeleteItemRes);
+}
+
+message CreateItemReq {
+    Item Item = 1;
+}
+
+message CreateItemRes {
+    string Message = 1;
+}
+
+message GetItemReq {
+    int32 UserID = 1;
+    int32 ID = 2;
+    string Title = 3;
+    string Description = 4;
+}
+
+message GetItemRes {
+    repeated Item Item = 1;
+    string Message = 2;
+}
+
+message UpdateItemReq {
+    Item Item = 1;
+}
+
+message UpdateItemRes {
+    Item Item = 1;
+    string Message = 2;
+}
+
+message DeleteItemReq {
+    int32 ID = 1;
+}
+
+message DeleteItemRes {
+    string Message = 1;
+}
