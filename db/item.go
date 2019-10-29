@@ -16,16 +16,17 @@ type Item struct {
 }
 
 //AddItem function
-func AddItem(item *Item) error {
+func AddItem(item *Item) (id int, err error) {
+	var _id int
 	sqlState := `
 	INSERT INTO item (title, description, user_id)
-	VALUES ($1, $2, $3);`
-	_, err := db.Exec(sqlState, &item.Title, &item.Description, &item.UserID)
+	VALUES ($1, $2, $3) RETURNING id;`
+	err = db.QueryRow(sqlState, &item.Title, &item.Description, &item.UserID).Scan(&_id)
 	if err != nil {
 		logger.Error("Failed to save item to database", "time", time.Now(), "err", err, "SQL state", sqlState)
-		return err
+		return 0, err
 	}
-	return nil
+	return _id, nil
 }
 
 //FindItem func
@@ -55,9 +56,9 @@ func FindItem(item *Item) ([]*Item, error) {
 	for rows.Next() {
 		item := Item{}
 		err = rows.Scan(
+			&item.ID,
 			&item.Title,
 			&item.Description,
-			&item.ID,
 			&item.UserID,
 		)
 		if err != nil {

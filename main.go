@@ -15,10 +15,13 @@ type Server struct{}
 
 func main() {
 	logger.InitLogger()
+
 	err := db.ConnectDB()
 	if err != nil {
+		logger.Error("Failed to connect to daabase", "time", time.Now(), "err", err)
 		return
 	}
+
 	listener, err := net.Listen("tcp", ":4040")
 	if err != nil {
 		logger.Error("Server failed to start", "time", time.Now(), "err", err)
