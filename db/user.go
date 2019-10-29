@@ -45,14 +45,13 @@ func Login(userCredentials *UserCredentials) (*int, error) {
 
 //AddUser func
 func AddUser(user *User) (*int, error) {
+	logger.Info("Create user request", time.Now(), "user", user)
 	var id int
-	sqlState := `
-	INSERT INTO app_user (username, full_name, password)
-	VALUES ($1, $2, $3) RETURNING id;`
+	sqlState := `INSERT INTO app_user (username, full_name, password) VALUES ($1, $2, $3) RETURNING id;`
 
 	err := db.QueryRow(sqlState, user.Username, user.FullName, user.Password).Scan(&id)
 	if err != nil {
-		logger.Error("Failed to get user from database", "time", time.Now(), "err", err, "SQL state", sqlState)
+		logger.Error("Failed to add user to database", "time", time.Now(), "err", err, "SQL state", sqlState)
 		return nil, err
 	}
 
@@ -107,9 +106,9 @@ func FindUser(user *User) ([]*User, error) {
 		for itemRows.Next() {
 			item := Item{}
 			err = itemRows.Scan(
+				&item.ID,
 				&item.Title,
 				&item.Description,
-				&item.ID,
 				&item.UserID,
 			)
 			if err != nil {

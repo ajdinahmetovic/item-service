@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/ajdinahmetovic/item-service/db"
 	"github.com/ajdinahmetovic/item-service/proto/v1"
@@ -11,8 +10,7 @@ import (
 //CreateItem func
 func (s *Server) CreateItem(ctx context.Context, request *proto.CreateItemReq) (*proto.CreateItemRes, error) {
 	item := request.GetItem()
-	fmt.Println(item)
-	err := db.AddItem(&db.Item{
+	id, err := db.AddItem(&db.Item{
 		ID:          int(item.ID),
 		Title:       item.Title,
 		Description: item.Description,
@@ -22,7 +20,7 @@ func (s *Server) CreateItem(ctx context.Context, request *proto.CreateItemReq) (
 		return nil, err
 	}
 
-	return &proto.CreateItemRes{Message: "Item added"}, nil
+	return &proto.CreateItemRes{Message: "Item added", ID: int32(id)}, nil
 }
 
 //GetItem func

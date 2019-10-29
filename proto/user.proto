@@ -30,7 +30,6 @@ service UserService {
     rpc DeleteItem (DeleteItemReq) returns (DeleteItemRes);
 
     rpc RefreshToken (RefreshTokenReq) returns (RefreshTokenRes);
-
     rpc CreateUser (CreateUserReq) returns (CreateUserRes);
     rpc Login (LoginUserReq) returns (LoginUserRes);
     rpc GetUser (GetUserReq) returns (GetUserRes);
@@ -44,6 +43,7 @@ message CreateItemReq {
 
 message CreateItemRes {
     string Message = 1;
+    int32 ID = 2;
 }
 
 message GetItemReq {

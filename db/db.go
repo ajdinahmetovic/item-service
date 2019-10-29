@@ -36,5 +36,6 @@ func ConnectDB() error {
 		logger.Error("Failed to ping database", "time", time.Now(), "err", err)
 		return err
 	}
+	logger.Info("Database connected", "time", time.Now(), "err", err)
 	return nil
 }
